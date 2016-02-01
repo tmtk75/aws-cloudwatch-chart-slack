@@ -1,0 +1,7 @@
+.e
+.DS_Store
+.*.swp
+node_modules
+.vagrant
+#dist
+credentials

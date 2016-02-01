@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+sort_key=${1-Name}
+aws rds describe-db-instances \
+  --output table \
+  --query '
+  DBInstances[]
+  .[
+    DBInstanceIdentifier,
+    DBInstanceClass,
+    AllocatedStorage,
+    MultiAZ
+  ]'

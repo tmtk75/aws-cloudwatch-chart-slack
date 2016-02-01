@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+sort_key=${1-Name}
+aws ec2 describe-instances \
+  --output table \
+  --filter Name=instance-state-name,Values=running \
+  --query '
+sort_by(
+  Reservations[].Instances[],
+  &(Tags[?Key==`'$sort_key'`]|[0].Value)
+)[]
+  .[
+    Tags[?Key==`Name`]|[0].Value,
+    InstanceType,
+    InstanceId,
+    PublicIpAddress,
+    PrivateIpAddress,
+    Placement.AvailabilityZone
+  ]'

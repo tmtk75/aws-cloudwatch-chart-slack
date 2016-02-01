@@ -1,0 +1,23 @@
+{
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "quotes": [2, "double"],
+    "strict": [2, "never"],
+    "babel/generator-star-spacing": 1,
+    "babel/new-cap": [1, {"capIsNewExceptions": ["List"]}],
+    "babel/object-shorthand": 1,
+    //"babel/arrow-parens": [2, "as-needed"],
+    "babel/no-await-in-loop": 1
+  },
+  "plugins": [
+    "babel"
+  ]
+}
