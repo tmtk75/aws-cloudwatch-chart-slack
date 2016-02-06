@@ -70,7 +70,7 @@ export function nsToDimName(ns: string): string {
   })[ns]
 }
 
-export function toMax(metrics: Metrics, name: string): ?number {
+export function toMax(metrics: Metrics): ?number {
   if (!metrics.Datapoints[0]) {
     return null;
   }
@@ -80,7 +80,7 @@ export function toMax(metrics: Metrics, name: string): ?number {
   return null;
 }
 
-export function toMin(metrics: Metrics, name: string): ?number {
+export function toMin(metrics: Metrics): ?number {
   if (!metrics.Datapoints[0]) {
     return null;
   }
@@ -106,25 +106,25 @@ export function toY(metric: Object, bytes: boolean): number {
 }
 
 const _stats = I.Set(["Maximum", "Average", "Minimum", "Sum", "SampleCount"])
-export function find_stat_name(datapoints: Array<Datapoint>): string {
+export function find_stat_name(datapoints: Array<Datapoint>): ?string {
   if (!(datapoints && datapoints.length > 0))
     return null
   let dp = datapoints[0];
   return I.List(Object.keys(dp)).find(e => _stats.has(e))
 }
 
-export function calc_period(datapoints: Array<Datapoint>, measurement: string = "minutes"): number {
+export function calc_period(datapoints: Array<Datapoint>, measurement: string = "minutes"): ?number {
   if (!(datapoints && datapoints.length > 1))
     return null
   let [a, b] = datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
   return moment(b.Timestamp).diff(moment(a.Timestamp), measurement)
 }
 
-export function to_axis_x_label_text(datapoints: Array<Datapoint>): string {
+export function to_axis_x_label_text(datapoints: Array<Datapoint>, utc: boolean): string {
   let dp = datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
   let last = moment(dp[dp.length - 1].Timestamp)
   let f = last.format("YYYY-MM-DD HH:mm")
-  let tz = argv.utc ? "UTC" : (new Date().getTimezoneOffset() / 60) + "h"
+  let tz = utc ? "UTC" : (new Date().getTimezoneOffset() / 60) + "h"
   let d = last.diff(moment(dp[0].Timestamp))
   let df = moment.duration(d).humanize()
   return `${find_stat_name(datapoints)} every ${calc_period(datapoints)}minutes from ${f} (tz:${tz}) to ${df} ago`

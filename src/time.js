@@ -30,7 +30,11 @@ export function toSEP(reltime: string = "1day"): SEP {
 }
 
 export function toSeconds(period: string): number {
-  let [_, n, u] = period.match(/([0-9]+)(.+)/);
+  let a = period.match(/([0-9]+)(.+)/);
+  if (!a) {
+    return NaN
+  }
+  let [_, n, u] = a;
   return moment.duration(parseInt(n), u).asSeconds();
 }
 

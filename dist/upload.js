@@ -21,7 +21,9 @@ function upload(channel, path) {
         res.json()
       );
     }).then(function (e) {
-      return resolve(e);
+      return e.ok ? resolve(e) : reject(e);
+    }).catch(function (err) {
+      return reject(err);
     });
   });
 }

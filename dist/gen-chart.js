@@ -1,12 +1,7 @@
+
 "use strict";
 
-var _system = require("system");
-
-var _system2 = _interopRequireDefault(_system);
-
-var _fs = require("fs");
-
-var _fs2 = _interopRequireDefault(_fs);
+var _phantomApi = require("./phantom-api.js");
 
 var _moment = require("moment");
 
@@ -16,7 +11,7 @@ var _metrics = require("./metrics.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var argv = require("minimist")(_system2.default.args.slice(1), {
+var argv = require("minimist")(_phantomApi.system.args.slice(1), {
   string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format"],
   boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes"],
   alias: {
@@ -32,7 +27,7 @@ var argv = require("minimist")(_system2.default.args.slice(1), {
 
 try {
   (function () {
-    var stats_data = JSON.parse(_system2.default.stdin.read());
+    var stats_data = JSON.parse(_phantomApi.system.stdin.read());
     var repre = stats_data[0];
     var MetricName = repre.Label || "";
     var Namespace = repre.Namespace || "";
@@ -49,7 +44,7 @@ try {
         return (0, _metrics.toY)(e, argv.bytes);
       }));
     });
-    var textLabelX = (0, _metrics.to_axis_x_label_text)(repre.Datapoints);
+    var textLabelX = (0, _metrics.to_axis_x_label_text)(repre.Datapoints, argv.utc);
 
     var data = {
       bindto: "#container",
@@ -112,8 +107,8 @@ try {
     render(argv, data);
   })();
 } catch (ex) {
-  _system2.default.stderr.write(ex.stack);
-  _system2.default.stderr.write("\n");
+  _phantomApi.system.stderr.write(ex.stack);
+  _phantomApi.system.stderr.write("\n");
   phantom.exit(1);
 }
 
@@ -121,7 +116,7 @@ try {
  * Rendering
  */
 function render(argv, data) {
-  var page = require("webpage").create();
+  var page = _phantomApi.webpage.create();
   page.onConsoleMessage = function (msg) {
     return console.log(msg);
   };
@@ -131,27 +126,27 @@ function render(argv, data) {
   };
   //console.log(JSON.stringify(page.viewportSize))
 
-  var suffix = argv.filename || "." + _system2.default.pid + "-" + new Date().getTime();
+  var suffix = argv.filename || "." + _phantomApi.system.pid + "-" + new Date().getTime();
   var tmp_html = "./" + suffix + ".html";
   var tmp_js = "./" + suffix + ".js";
   var filename = argv.filename || "./" + suffix + ".png";
   var node_modules_path = argv.node_modules_path;
 
-  _fs2.default.write(tmp_js, "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
-  _fs2.default.write(tmp_html, "\n  <html>\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='container'></div>\n    </body>\n    <script src=\"" + tmp_js + "\"></script>\n  </html>\n  ");
+  _phantomApi.fs.write(tmp_js, "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
+  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='container'></div>\n    </body>\n    <script src=\"" + tmp_js + "\"></script>\n  </html>\n  ");
 
   page.open(tmp_html, function (status) {
     if (!argv.base64) {
       page.render(filename, { format: argv.format });
-      _system2.default.stdout.write(filename);
+      _phantomApi.system.stdout.write(filename);
     } else {
-      _system2.default.stdout.write(page.renderBase64(argv.format));
+      _phantomApi.system.stdout.write(page.renderBase64(argv.format));
     }
     if (!argv["keep-html"]) {
-      _fs2.default.remove(tmp_html);
+      _phantomApi.fs.remove(tmp_html);
     }
     if (!argv["keep-js"]) {
-      _fs2.default.remove(tmp_js);
+      _phantomApi.fs.remove(tmp_js);
     }
     phantom.exit();
   });

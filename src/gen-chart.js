@@ -1,6 +1,6 @@
+// @flow
 "use strict"
-import system from "system"
-import fs     from "fs"
+import {system, fs, webpage} from "./phantom-api.js"
 import moment from "moment"
 import {toMax, toMin, toAxisYLabel, toY, nsToDimName, to_axis_x_label_text} from "./metrics.js"
 
@@ -30,7 +30,7 @@ try {
     }
     return [stats[nsToDimName(Namespace)]].concat(sort(stats.Datapoints).map(e => toY(e, argv.bytes)))
   })
-  const textLabelX = to_axis_x_label_text(repre.Datapoints)
+  const textLabelX = to_axis_x_label_text(repre.Datapoints, argv.utc)
 
   const data = {
     bindto: "#container",
@@ -101,7 +101,7 @@ try {
  * Rendering
  */
 function render(argv: Object, data: Object): void {
-  const page = require("webpage").create()
+  const page = webpage.create()
   page.onConsoleMessage = (msg) => console.log(msg)
   page.viewportSize = {
     width:  argv.width  ? parseInt(argv.width)  : page.viewportSize.width,

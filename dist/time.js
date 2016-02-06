@@ -45,13 +45,16 @@ function toSEP() {
 }
 
 function toSeconds(period) {
-  var _period$match = period.match(/([0-9]+)(.+)/);
+  var a = period.match(/([0-9]+)(.+)/);
+  if (!a) {
+    return NaN;
+  }
 
-  var _period$match2 = _slicedToArray(_period$match, 3);
+  var _a2 = _slicedToArray(a, 3);
 
-  var _ = _period$match2[0];
-  var n = _period$match2[1];
-  var u = _period$match2[2];
+  var _ = _a2[0];
+  var n = _a2[1];
+  var u = _a2[2];
 
   return _moment2.default.duration(parseInt(n), u).asSeconds();
 }

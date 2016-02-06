@@ -54,7 +54,7 @@ function nsToDimName(ns) {
   }[ns];
 }
 
-function toMax(metrics, name) {
+function toMax(metrics) {
   if (!metrics.Datapoints[0]) {
     return null;
   }
@@ -64,7 +64,7 @@ function toMax(metrics, name) {
   return null;
 }
 
-function toMin(metrics, name) {
+function toMin(metrics) {
   if (!metrics.Datapoints[0]) {
     return null;
   }
@@ -115,13 +115,13 @@ function calc_period(datapoints) {
   return (0, _moment2.default)(b.Timestamp).diff((0, _moment2.default)(a.Timestamp), measurement);
 }
 
-function to_axis_x_label_text(datapoints) {
+function to_axis_x_label_text(datapoints, utc) {
   var dp = datapoints.sort(function (a, b) {
     return a.Timestamp.localeCompare(b.Timestamp);
   });
   var last = (0, _moment2.default)(dp[dp.length - 1].Timestamp);
   var f = last.format("YYYY-MM-DD HH:mm");
-  var tz = argv.utc ? "UTC" : new Date().getTimezoneOffset() / 60 + "h";
+  var tz = utc ? "UTC" : new Date().getTimezoneOffset() / 60 + "h";
   var d = last.diff((0, _moment2.default)(dp[0].Timestamp));
   var df = _moment2.default.duration(d).humanize();
   return find_stat_name(datapoints) + " every " + calc_period(datapoints) + "minutes from " + f + " (tz:" + tz + ") to " + df + " ago";

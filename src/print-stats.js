@@ -9,6 +9,7 @@ type Params = {
   _: Array<string>;
   region: string;
   duration: string;
+  statistics: string;
 }
 
 function print_stats(argv: Params): Promise {

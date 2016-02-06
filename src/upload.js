@@ -19,7 +19,8 @@ function upload(channel: string, path: string): Promise {
          */
         res.json()
       )
-      .then(e => resolve(e))
+      .then(e => e.ok ? resolve(e) : reject(e))
+      .catch(err => reject(err))
   })
 }
 
