@@ -1,4 +1,4 @@
-# README
+# README  [![Build Status](https://circleci.com/gh/tmtk75/aws-cloudwatch-chart-slack.png)](https://circleci.com/gh/tmtk75/aws-cloudwatch-chart-slack)
 You can render charts for statistics of CloudWatch,
 and can upload chart images to channels of Slack.
 
