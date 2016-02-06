@@ -3,7 +3,8 @@
 
 var _index = require("./index.js");
 
-_index.slack.post("#api-test", process.argv.slice(2), function (err, file) {
+var channel_name = process.env.SLACK_CHANNEL_NAME || "#api-test";
+_index.slack.post(channel_name, process.argv.slice(2), function (err, file) {
   if (err) {
     console.error(err.stack);
     return;

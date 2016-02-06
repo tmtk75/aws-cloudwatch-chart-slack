@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import {slack} from "./index.js"
 
-slack.post("#api-test", process.argv.slice(2), (err, file) => {
+const channel_name = process.env.SLACK_CHANNEL_NAME || "#api-test"
+slack.post(channel_name, process.argv.slice(2), (err, file) => {
   if (err) {
     console.error(err.stack);
     return
