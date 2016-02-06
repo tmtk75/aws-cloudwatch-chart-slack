@@ -1,17 +1,17 @@
 {
-  "name": "aws-cloudwatch-chart-renderer",
+  "name": "aws-cloudwatch-chart-slack",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "~4",
+    "node": ">=0.12",
     "npm": "~2"
   },
   "scripts": {
     "build": "gulp compile",
     "test": "BABEL_ENV=test mocha --require babel-core/register --recursive",
     "lint": "gulp lint",
-    "typecheck": "gulp typecheck"
+    "typecheck": "flow check"
   },
   "author": "tmtk75 (Tomotaka Sakuma)",
   "license": "MIT",
@@ -47,5 +47,9 @@
   },
   "directories": {
     "bin": "./bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tmtk75/aws-cloudwatch-chart-slack"
   }
 }
