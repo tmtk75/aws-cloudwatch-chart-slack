@@ -1,7 +1,8 @@
 {
   "name": "aws-cloudwatch-chart-slack",
   "version": "0.1.0",
-  "description": "",
+  "description": "Chart Renderer for AWS CloudWatch Datapoints and Uploader to Slack",
+  "keywords": ["AWS", "CloudWatch", "chart", "upload", "Slack"],
   "main": "index.js",
   "engines": {
     "node": ">=0.12",
