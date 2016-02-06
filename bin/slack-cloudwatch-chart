@@ -44,4 +44,9 @@ if [ "$1" == "" ]; then
   exit 1
 fi
 
-node dist/cli.js $*
+cli_path="$(cd ${0%/*}/..; pwd)"/aws-cloudwatch-chart-slack/dist/cli.js
+if [ -e $cli_path ]; then
+  node $cli_path $*
+else
+  node dist/cli.js $*
+fi
