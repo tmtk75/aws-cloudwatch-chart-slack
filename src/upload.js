@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @flow
-"use strict"
 var fs = require("fs");
 var fetch = require("node-fetch");
 var FormData = require("form-data");

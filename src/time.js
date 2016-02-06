@@ -1,5 +1,4 @@
 // @flow
-"use strict"
 import moment from "moment"
 
 type SEP = {

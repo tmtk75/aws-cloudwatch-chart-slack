@@ -1,5 +1,4 @@
 // @flow
-"use strict"
 import {system, fs, webpage} from "./phantom-api.js"
 import moment from "moment"
 import {toMax, toMin, toAxisYLabel, toY, nsToDimName, to_axis_x_label_text} from "./metrics.js"

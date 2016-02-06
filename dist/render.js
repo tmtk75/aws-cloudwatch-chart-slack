@@ -1,4 +1,3 @@
-
 "use strict";
 
 var _minimist = require("minimist");

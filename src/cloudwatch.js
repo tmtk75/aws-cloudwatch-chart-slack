@@ -1,5 +1,4 @@
 // @flow
-"use strict"
 import AWS from "aws-sdk"
 import time from "./time.js"
 import moment from "moment"

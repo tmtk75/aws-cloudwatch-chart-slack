@@ -1,5 +1,4 @@
 // @flow
-"use strict"
 import CloudWatch from "./cloudwatch.js"
 import {nsToDimName} from "./metrics.js"
 import {toSeconds} from "./time.js"

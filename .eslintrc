@@ -12,7 +12,7 @@
     "quotes": [2, "double"],
     "strict": [2, "never"],
     "babel/generator-star-spacing": 1,
-    "babel/new-cap": [1, {"capIsNewExceptions": ["List"]}],
+    "babel/new-cap": [1, {"capIsNewExceptions": ["List", "Set"]}],
     "babel/object-shorthand": 1,
     //"babel/arrow-parens": [2, "as-needed"],
     "babel/no-await-in-loop": 1

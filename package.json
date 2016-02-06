@@ -10,10 +10,10 @@
   "scripts": {
     "build": "gulp compile",
     "test": "BABEL_ENV=test mocha --require babel-core/register --recursive",
-    "lint": "gulp lint",
+    "lint": "gulp eslint",
     "typecheck": "flow check"
   },
-  "author": "tmtk75 (Tomotaka Sakuma)",
+  "author": "tmtk75",
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.2.30",

@@ -1,4 +1,3 @@
-
 "use strict";
 
 var _phantomApi = require("./phantom-api.js");

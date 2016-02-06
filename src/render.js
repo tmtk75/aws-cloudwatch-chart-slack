@@ -1,5 +1,4 @@
 // @flow
-"use strict"
 import minimist from "minimist"
 import {print_stats} from "./print-stats.js"
 import {spawn} from "child_process"
