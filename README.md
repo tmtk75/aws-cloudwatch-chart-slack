@@ -141,3 +141,15 @@ You can open the html file and see the chart rendered by c3.js.
 $ open a.png.html
 ```
 
+## Contribution
+1. Fork me (<https://github.com/tmtk75/aws-cloudwatch-chart-slack>)
+1. Create your feature branch (git checkout -b my-new-feature)
+1. Commit your changes (git commit -am 'Add some feature')
+1. Push to the branch (git push origin my-new-feature)
+1. Create your new pull request
+
+
+## License
+
+[MIT License](http://opensource.org/licenses/MIT)
+
