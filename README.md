@@ -1,10 +1,6 @@
 # README
-WIP :car:
-
-NOTE: master branch may be forcely pushed.
-
 You can render charts for statistics of CloudWatch,
-and also can upload chart images to channels of Slack.
+and can upload chart images to channels of Slack.
 
 <img src="https://59c5872c.jp.kiiapps.com/api/x/s.51e97aa00022-e3da-5e11-3a8c-0a01367a"></img>
 
