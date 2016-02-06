@@ -10,6 +10,7 @@ You can render charts for datapoints of CloudWatch, and can upload chart images 
 $ npm install [--no-spin]
 ```
 
+Set four environment variables.
 ```
 export AWS_DEFAULT_REGION=ap-northeast-1                                                                                    │~
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
@@ -17,7 +18,7 @@ export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export SLACK_API_TOKEN=bbbb-xxxxxxxxxx-yyyyyyyyyy-zzzzzzzzzzz-aaaaaaaaaa
 ```
 
-If MacOSX, try this.
+Try this, of course change channel name as you have. 
 ```
 SLACK_CHANNEL_NAME=#api-test ./bin/slack-cloudwatch-chart <EC2-instance-id>
 ```
