@@ -1,8 +1,9 @@
 # README  [![Build Status](https://circleci.com/gh/tmtk75/aws-cloudwatch-chart-slack.png)](https://circleci.com/gh/tmtk75/aws-cloudwatch-chart-slack)
-You can render charts for statistics of CloudWatch,
-and can upload chart images to channels of Slack.
+This module is a chart renderer and uploader to Slack.
+It's easy to share charts of CloudWatch on Slack.
+You can render charts for datapoints of CloudWatch, and can upload chart images to channels of Slack.
 
-<img src="https://59c5872c.jp.kiiapps.com/api/x/s.51e97aa00022-e3da-5e11-3a8c-0a01367a"></img>
+<img width="70.7%" src="https://59c5872c.jp.kiiapps.com/api/x/s.51e97aa00022-e3da-5e11-3a8c-0a01367a"></img>
 
 ## Getting Started
 ```
@@ -24,19 +25,52 @@ SLACK_CHANNEL_NAME=#api-test ./bin/slack-cloudwatch-chart <EC2-instance-id>
 A few seconds later, You can see a chart on the channel.
 
 
-## Build
+## Hubot Integration
+Please add the below snippet.
+```coffee-script
+chart = require "aws-cloudwatch-chart-slack"
+module.exports = (robot) ->
+  robot.respond /cloudwatch (.+)/i, (msg) ->
+    [id, params...] = msg.match[1].split(" ").map (e) -> e.trim()
+    console.log "cloudwatch: #{id}"
+    console.log "message.room: #{msg.message.room}"
+
+    chart.slack.post "##{channel_name}", [id, params...], (err, file)->
+      if (err)
+        console.error err.stack
+        msg.send err.message
 ```
-$ npm run build
-```
+<img width="70.7%" src="https://59c5872c.jp.kiiapps.com/api/x/s.51e97aa00022-e3da-5e11-2acc-0fa6c227"></img>
+
+For arguments and available options, see [here](https://github.com/tmtk76/aws-cloudwatch-chart-slack/blob/master/bin/slack-cloudwatch-chart#L1://github.com/tmtk75/aws-cloudwatch-chart-slack/blob/master/bin/slack-cloudwatch-chart#L5).
 
 
-## Test
+## Development
+```
+$ gulp
+```
+The gulp default task is to complie watching change of sources.
+`src/*.js` are compiled and saved under `dist`.
+
 ```
 $ npm test
+or
+$ gulp test
 ```
+The 1st one is to run test once, the 2nd one watches change of sources.
+
+```
+$ npm run lint
+```
+Linting with ESLint.
+
+```
+$ npm run typecheck
+```
+Run type check with [flow](http://flowtype.org/).
 
 
-## How it works
+### How it works
 ```
 dist/index.js
     |
@@ -94,7 +128,7 @@ $ node dist/upload.js ./.97516-1454216914841.png
 ```
 
 
-## How to debug for rendering chart
+## How to debug for rendered charts
 You can prevent removing temporary files with two options.
 ```
 $ node dist/render.js i-003bb906 --filename a.png --keep-html --keep-js
@@ -106,8 +140,4 @@ You can open the html file and see the chart rendered by c3.js.
 ```
 $ open a.png.html
 ```
-
-
-## TODO
-- [ ] Timeout
 
