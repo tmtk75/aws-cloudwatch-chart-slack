@@ -5,7 +5,7 @@ import {render} from "./render.js"
 import {upload} from "./upload.js"
 import {ls_ec2} from "./ls-ec2.js"
 
-function unlink(path: Object) {
+function unlink(path: string): Promise {
   return new Promise((resolve, reject) => fs.unlink(path, (err) => err ? reject(err) : resolve(path)))
 }
 
