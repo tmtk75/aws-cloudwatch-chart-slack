@@ -8,6 +8,7 @@ import {
 } from "./metrics.js"
 
 class CloudWatch {
+  _endTime: string;
   _duration: string;
   _period: number;
   _statistics: string;
@@ -15,6 +16,12 @@ class CloudWatch {
   /** */
   region(r: string): CloudWatch {
     AWS.config.update({region: r});
+    return this;
+  }
+
+  /** */
+  endTime(d: string): CloudWatch {
+    this._endTime = d;
     return this;
   }
 
@@ -40,7 +47,7 @@ class CloudWatch {
   metricStatistics(namespace: string, instanceID: string, metricName: string): Promise {
     let dimName = nsToDimName(namespace);
     let metric  = searchMetric(namespace, metricName);
-    let sep     = time.toSEP(this._duration);
+    let sep     = time.toSEP(this._duration, this._endTime);
     if (this._period) {
       sep.Period = this._period;
     }

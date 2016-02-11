@@ -3,6 +3,7 @@ import {
   searchMetric,
   find_stat_name,
   calc_period,
+  toY,
 } from "../src/metrics.js"
 
 describe("metrics", () => {
@@ -63,6 +64,18 @@ describe("metrics", () => {
       let a = {Timestamp: "2016-01-31T15:35:00.000Z"}
       let b = {Timestamp: "2016-01-31T16:35:00.000Z"}
       assert(calc_period([a, b], "hours") === 1)
+    })
+
+  })
+
+  describe("toY", () => {
+
+    it ("returns Megabytes", () => {
+      assert(toY({Maximum: 60 * 1024 * 1024, Unit: "Bytes"}) === 60)
+    })
+
+    it ("returns Bytes", () => {
+      assert(toY({Maximum: 60, Unit: "Bytes"}, true) === 60)
     })
 
   })

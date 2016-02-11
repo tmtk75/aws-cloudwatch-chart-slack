@@ -9,6 +9,7 @@ type Params = {
   region: string;
   duration: string;
   statistics: string;
+  "end-time": string;
 }
 
 function print_stats(argv: Params): Promise {
@@ -29,6 +30,7 @@ function print_stats(argv: Params): Promise {
   let watch = (instanceID) =>
     new CloudWatch()
       .region(region)
+      .endTime(argv["end-time"])
       .duration(argv.duration || "1day")
       .period(period)
       .statistics(stats)
@@ -36,6 +38,7 @@ function print_stats(argv: Params): Promise {
       .then(r => ({
         Namespace: ns,
         [dimName]: instanceID,
+        Period: period,
         ...r,
       }))
 

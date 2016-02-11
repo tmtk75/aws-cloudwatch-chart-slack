@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sort_key=${1-Name}
+aws dynamodb list-tables \
+  --output table \
+  --query 'TableNames'

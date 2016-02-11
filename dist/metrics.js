@@ -30,12 +30,15 @@ var metricsRDS = [{ MetricName: "BinLogDiskUsage", Statistics: ["Maximum"] }, { 
 
 var metricsEC2 = [{ MetricName: "CPUCreditUsage", Statistics: ["Maximum"] }, { MetricName: "CPUCreditBalance", Statistics: ["Maximum"] }, { MetricName: "CPUUtilization", Statistics: ["Maximum"] }, { MetricName: "DiskReadOps", Statistics: ["Maximum"] }, { MetricName: "DiskWriteOps", Statistics: ["Maximum"] }, { MetricName: "DiskReadBytes", Statistics: ["Maximum"] }, { MetricName: "DiskWriteBytes", Statistics: ["Maximum"] }, { MetricName: "NetworkIn", Statistics: ["Maximum"] }, { MetricName: "NetworkOut", Statistics: ["Maximum"] }, { MetricName: "StatusCheckFailed", Statistics: ["Maximum"] }, { MetricName: "StatusCheckFailed_Instance", Statistics: ["Maximum"] }, { MetricName: "StatusCheckFailed_System", Statistics: ["Maximum"] }];
 
+var metricsDynamoDB = [{ MetricName: "ConsumedReadCapacityUnits", Statistics: ["Sum"] }, { MetricName: "ConsumedWriteCapacityUnits", Statistics: ["Sum"] }, { MetricName: "ProvisionedReadCapacityUnits", Statistics: ["Maximum"] }, { MetricName: "ProvisionedWriteCapacityUnits", Statistics: ["Maximum"] }, { MetricName: "ConditionalCheckFailedRequests", Statistics: ["Maximum"] }, { MetricName: "OnlineIndexConsumedWriteCapacity", Statistics: ["Maximum"] }, { MetricName: "OnlineIndexPercentageProgress", Statistics: ["Maximum"] }, { MetricName: "OnlineIndexThrottleEvents", Statistics: ["Maximum"] }, { MetricName: "ReturnedItemCount", Statistics: ["Maximum"] }, { MetricName: "SuccessfulRequestLatency", Statistics: ["Maximum"] }, { MetricName: "SystemErrors", Statistics: ["Maximum"] }, { MetricName: "ThrottledRequests", Statistics: ["Maximum"] }, { MetricName: "UserErrors", Statistics: ["Maximum"] }, { MetricName: "WriteThrottleEvents", Statistics: ["Maximum"] }, { MetricName: "ReadThrottleEvents", Statistics: ["Sum"] }];
+
 "Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None";
 "Minimum | Maximum | Sum | Average | SampleCount";
 
 var METRICS = exports.METRICS = {
   "AWS/EC2": metricsEC2,
-  "AWS/RDS": metricsRDS
+  "AWS/RDS": metricsRDS,
+  "AWS/DynamoDB": metricsDynamoDB
 };
 
 function searchMetric(ns, metricName) {
@@ -49,7 +52,8 @@ function searchMetric(ns, metricName) {
 function nsToDimName(ns) {
   return {
     "AWS/RDS": "DBInstanceIdentifier",
-    "AWS/EC2": "InstanceId"
+    "AWS/EC2": "InstanceId",
+    "AWS/DynamoDB": "TableName"
   }[ns];
 }
 
@@ -119,6 +123,7 @@ function to_axis_x_label_text(datapoints, utc) {
     return a.Timestamp.localeCompare(b.Timestamp);
   });
   var last = (0, _moment2.default)(dp[dp.length - 1].Timestamp);
+  if (utc) last = last.utc();
   var f = last.format("YYYY-MM-DD HH:mm");
   var tz = utc ? "UTC" : new Date().getTimezoneOffset() / 60 + "h";
   var d = last.diff((0, _moment2.default)(dp[0].Timestamp));

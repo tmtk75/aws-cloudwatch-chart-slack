@@ -43,6 +43,15 @@ var CloudWatch = function () {
     /** */
 
   }, {
+    key: "endTime",
+    value: function endTime(d) {
+      this._endTime = d;
+      return this;
+    }
+
+    /** */
+
+  }, {
     key: "duration",
     value: function duration(d) {
       this._duration = d;
@@ -74,7 +83,7 @@ var CloudWatch = function () {
     value: function metricStatistics(namespace, instanceID, metricName) {
       var dimName = (0, _metrics.nsToDimName)(namespace);
       var metric = (0, _metrics.searchMetric)(namespace, metricName);
-      var sep = _time2.default.toSEP(this._duration);
+      var sep = _time2.default.toSEP(this._duration, this._endTime);
       if (this._period) {
         sep.Period = this._period;
       }

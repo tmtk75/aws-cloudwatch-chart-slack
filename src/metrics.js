@@ -35,12 +35,31 @@ const metricsEC2 = [
   { MetricName: "StatusCheckFailed_System",   Statistics: [ "Maximum" ] },
 ]
 
+const metricsDynamoDB = [
+  { MetricName: "ConsumedReadCapacityUnits",        Statistics: [ "Sum" ] },
+  { MetricName: "ConsumedWriteCapacityUnits",       Statistics: [ "Sum" ] },
+  { MetricName: "ProvisionedReadCapacityUnits",     Statistics: [ "Maximum" ] },
+  { MetricName: "ProvisionedWriteCapacityUnits",    Statistics: [ "Maximum" ] },
+  { MetricName: "ConditionalCheckFailedRequests",   Statistics: [ "Maximum" ] },
+  { MetricName: "OnlineIndexConsumedWriteCapacity", Statistics: [ "Maximum" ] },
+  { MetricName: "OnlineIndexPercentageProgress",    Statistics: [ "Maximum" ] },
+  { MetricName: "OnlineIndexThrottleEvents",        Statistics: [ "Maximum" ] },
+  { MetricName: "ReturnedItemCount",                Statistics: [ "Maximum" ] },
+  { MetricName: "SuccessfulRequestLatency",         Statistics: [ "Maximum" ] },
+  { MetricName: "SystemErrors",                     Statistics: [ "Maximum" ] },
+  { MetricName: "ThrottledRequests",                Statistics: [ "Maximum" ] },
+  { MetricName: "UserErrors",                       Statistics: [ "Maximum" ] },
+  { MetricName: "WriteThrottleEvents",              Statistics: [ "Maximum" ] },
+  { MetricName: "ReadThrottleEvents",               Statistics: [ "Sum" ] },
+]
+
 "Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None"
 "Minimum | Maximum | Sum | Average | SampleCount"
 
 export const METRICS = {
   "AWS/EC2": metricsEC2,
   "AWS/RDS": metricsRDS,
+  "AWS/DynamoDB": metricsDynamoDB,
 }
 
 type Metric = {
@@ -66,6 +85,7 @@ export function nsToDimName(ns: string): string {
   return ({
     "AWS/RDS": "DBInstanceIdentifier",
     "AWS/EC2": "InstanceId",
+    "AWS/DynamoDB": "TableName",
   })[ns]
 }
 
@@ -122,6 +142,7 @@ export function calc_period(datapoints: Array<Datapoint>, measurement: string = 
 export function to_axis_x_label_text(datapoints: Array<Datapoint>, utc: boolean): string {
   let dp = datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
   let last = moment(dp[dp.length - 1].Timestamp)
+  if (utc) last = last.utc()
   let f = last.format("YYYY-MM-DD HH:mm")
   let tz = utc ? "UTC" : (new Date().getTimezoneOffset() / 60) + "h"
   let d = last.diff(moment(dp[0].Timestamp))

@@ -2,6 +2,7 @@
 import {system, fs, webpage} from "./phantom-api.js"
 import moment from "moment"
 import {toMax, toMin, toAxisYLabel, toY, nsToDimName, to_axis_x_label_text} from "./metrics.js"
+import dynamodb from "./dynamodb.js"
 
 const argv = require("minimist")(system.args.slice(1), {
   string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format"],
@@ -14,6 +15,8 @@ const argv = require("minimist")(system.args.slice(1), {
     height: 300,
     node_modules_path: "./node_modules",
     format: "png",
+    "x-tick-count": 120,
+    "x-tick-culling-max": 10,
   }
 });
 
@@ -24,10 +27,12 @@ try {
   const Namespace  = repre.Namespace || ""
   const sort = (datapoints) => datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
   const yData = stats_data.map(stats => {
-    if (stats.Datapoints.length === 0) {
-      throw new Error(`Datapoints is empty for ${MetricName} of ${stats.InstanceId}. There is a possibility InstanceId was wrong.`)
+    if (stats.Datapoints.length < 2) {
+      throw new Error(`Number of datapoints is less than 2 for ${MetricName} of ${stats.InstanceId}. There is a possibility InstanceId was wrong.`)
     }
-    return [stats[nsToDimName(Namespace)]].concat(sort(stats.Datapoints).map(e => toY(e, argv.bytes)))
+    let b = dynamodb.mimic(stats)
+    return [stats[nsToDimName(Namespace)]].concat(sort(stats.Datapoints)
+             .map(e => b ? dynamodb.toY(e) : toY(e, argv.bytes)))
   })
   const textLabelX = to_axis_x_label_text(repre.Datapoints, argv.utc)
 
@@ -46,7 +51,7 @@ try {
       duration: null,  //
     },
     size: {
-      width:  argv.width  - 8,  // heuristic adjustments
+      width:  argv.width  - 16,  // heuristic adjustments
       height: argv.height - 16,
     },
     axis: {
@@ -65,8 +70,9 @@ try {
       x: {
         type: "timeseries",
         tick: {
+          count: argv["x-tick-count"],
           culling: {
-            max: 5,
+            max: argv["x-tick-culling-max"],
           },
           _format: "%Y-%m-%dT%H:%M:%S",
           format: "%H:%M",

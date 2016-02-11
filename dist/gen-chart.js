@@ -8,6 +8,10 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _metrics = require("./metrics.js");
 
+var _dynamodb = require("./dynamodb.js");
+
+var _dynamodb2 = _interopRequireDefault(_dynamodb);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var argv = require("minimist")(_phantomApi.system.args.slice(1), {
@@ -20,7 +24,9 @@ var argv = require("minimist")(_phantomApi.system.args.slice(1), {
     width: 800,
     height: 300,
     node_modules_path: "./node_modules",
-    format: "png"
+    format: "png",
+    "x-tick-count": 120,
+    "x-tick-culling-max": 10
   }
 });
 
@@ -36,11 +42,12 @@ try {
       });
     };
     var yData = stats_data.map(function (stats) {
-      if (stats.Datapoints.length === 0) {
-        throw new Error("Datapoints is empty for " + MetricName + " of " + stats.InstanceId + ". There is a possibility InstanceId was wrong.");
+      if (stats.Datapoints.length < 2) {
+        throw new Error("Number of datapoints is less than 2 for " + MetricName + " of " + stats.InstanceId + ". There is a possibility InstanceId was wrong.");
       }
+      var b = _dynamodb2.default.mimic(stats);
       return [stats[(0, _metrics.nsToDimName)(Namespace)]].concat(sort(stats.Datapoints).map(function (e) {
-        return (0, _metrics.toY)(e, argv.bytes);
+        return b ? _dynamodb2.default.toY(e) : (0, _metrics.toY)(e, argv.bytes);
       }));
     });
     var textLabelX = (0, _metrics.to_axis_x_label_text)(repre.Datapoints, argv.utc);
@@ -60,7 +67,7 @@ try {
         duration: null },
       //
       size: {
-        width: argv.width - 8, // heuristic adjustments
+        width: argv.width - 16, // heuristic adjustments
         height: argv.height - 16
       },
       axis: {
@@ -79,8 +86,9 @@ try {
         x: {
           type: "timeseries",
           tick: {
+            count: argv["x-tick-count"],
             culling: {
-              max: 5
+              max: argv["x-tick-culling-max"]
             },
             _format: "%Y-%m-%dT%H:%M:%S",
             format: "%H:%M"

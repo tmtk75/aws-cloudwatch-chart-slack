@@ -10,13 +10,14 @@ type SEP = {
 /*
  * Start End Period
  */
-export function toSEP(reltime: string = "1day"): SEP {
+export function toSEP(reltime: string = "1day", end: string = ""): SEP {
   let a = reltime.match(/([0-9]+) *(.*)/)
   if (!a) {
     throw new Error(reltime)
   }
   let [_, n, m] = a
-  let endTime   = moment()
+  let endTime   = end ? moment(end) : moment()
+  //console.error(endTime);
   let duration  = moment.duration(parseInt(n), m)
   let startTime = endTime.clone().subtract(duration)
   let period    = 60 * 30

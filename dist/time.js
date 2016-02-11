@@ -19,6 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 function toSEP() {
   var reltime = arguments.length <= 0 || arguments[0] === undefined ? "1day" : arguments[0];
+  var end = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
 
   var a = reltime.match(/([0-9]+) *(.*)/);
   if (!a) {
@@ -31,7 +32,8 @@ function toSEP() {
   var n = _a[1];
   var m = _a[2];
 
-  var endTime = (0, _moment2.default)();
+  var endTime = end ? (0, _moment2.default)(end) : (0, _moment2.default)();
+  //console.error(endTime);
   var duration = _moment2.default.duration(parseInt(n), m);
   var startTime = endTime.clone().subtract(duration);
   var period = 60 * 30;

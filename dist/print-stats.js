@@ -34,10 +34,12 @@ function print_stats(argv) {
   }
 
   var watch = function watch(instanceID) {
-    return new _cloudwatch2.default().region(region).duration(argv.duration || "1day").period(period).statistics(stats).metricStatistics(ns, instanceID, metricName).then(function (r) {
-      return _extends(_defineProperty({
+    return new _cloudwatch2.default().region(region).endTime(argv["end-time"]).duration(argv.duration || "1day").period(period).statistics(stats).metricStatistics(ns, instanceID, metricName).then(function (r) {
+      var _extends2;
+
+      return _extends((_extends2 = {
         Namespace: ns
-      }, dimName, instanceID), r);
+      }, _defineProperty(_extends2, dimName, instanceID), _defineProperty(_extends2, "Period", period), _extends2), r);
     });
   };
 
