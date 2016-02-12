@@ -4,7 +4,7 @@ import moment from "moment"
 
 const metricsRDS = [
   { MetricName: "BinLogDiskUsage",           Statistics: [ "Maximum" ] },
-  { MetricName: "CPUUtilization",            Statistics: [ "Maximum" ] },
+  { MetricName: "CPUUtilization",            Statistics: [ "Average" ] },
   { MetricName: "DatabaseConnections",       Statistics: [ "Maximum" ] },
   { MetricName: "DiskQueueDepth",            Statistics: [ "Maximum" ] },
   { MetricName: "FreeStorageSpace",          Statistics: [ "Maximum" ] },
@@ -23,7 +23,7 @@ const metricsRDS = [
 const metricsEC2 = [
   { MetricName: "CPUCreditUsage",             Statistics: [ "Maximum" ] },
   { MetricName: "CPUCreditBalance",           Statistics: [ "Maximum" ] },
-  { MetricName: "CPUUtilization",             Statistics: [ "Maximum" ] },
+  { MetricName: "CPUUtilization",             Statistics: [ "Average" ] },
   { MetricName: "DiskReadOps",                Statistics: [ "Maximum" ] },
   { MetricName: "DiskWriteOps",               Statistics: [ "Maximum" ] },
   { MetricName: "DiskReadBytes",              Statistics: [ "Maximum" ] },
