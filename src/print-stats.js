@@ -1,7 +1,9 @@
 // @flow
+import AWS from "aws-sdk"
 import CloudWatch from "./cloudwatch.js"
 import {nsToDimName} from "./metrics.js"
 import {toSeconds} from "./time.js"
+import {ls_ec2} from "./ls-ec2.js"
 import path from "path"
 
 type Params = {
@@ -27,9 +29,10 @@ function print_stats(argv: Params): Promise {
     return Promise.reject(new Error("InstanceId is missing"))
   }
 
+  AWS.config.update({region});
+
   let watch = (instanceID) =>
     new CloudWatch()
-      .region(region)
       .endTime(argv["end-time"])
       .duration(argv.duration || "1day")
       .period(period)
@@ -42,7 +45,13 @@ function print_stats(argv: Params): Promise {
         ...r,
       }))
 
-  return Promise.all(instIDs.split(",").map(e => watch(e.trim())))
+  let a = instIDs.match("^tag:(.*)")
+  if (a && ns === "AWS/RDS")
+    return Promise.reject(new Error("filters is not supported AWS/RDS"))
+
+  let p = (a ? ls_ec2(a[1]) : Promise.resolve(instIDs))
+  return p.then(s => s.split(","))
+          .then(s => Promise.all(s.map(e => watch(e.trim()))))
 }
 
 module.exports = {

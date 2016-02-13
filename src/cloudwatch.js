@@ -14,12 +14,6 @@ class CloudWatch {
   _statistics: string;
 
   /** */
-  region(r: string): CloudWatch {
-    AWS.config.update({region: r});
-    return this;
-  }
-
-  /** */
   endTime(d: string): CloudWatch {
     this._endTime = d;
     return this;

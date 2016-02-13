@@ -46,6 +46,44 @@ module.exports = (robot) ->
 For arguments and available options, see [here](https://github.com/tmtk76/aws-cloudwatch-chart-slack/blob/master/bin/slack-cloudwatch-chart#L1://github.com/tmtk75/aws-cloudwatch-chart-slack/blob/master/bin/slack-cloudwatch-chart#L5).
 
 
+## How to give arguments
+By default, metric is `CPUUtilization` and namespace is `AWS/EC2`.
+```
+cloudwatch i-12345678
+```
+
+You can give metric and namespace at 2nd and 3rd arguments.
+```
+cloudwatch main-db FreeableMemory AWS/RDS
+```
+
+Multiple IDs can be given seperated with `,`.
+```
+cloudwatch i-xyza5678,i-abcd1234
+```
+
+`--region` is to specify a AWS region.
+```
+cloudwatch i-abcd4567 --region us-west-2
+```
+
+`--statistics` has `Maximum`, `Minimum`, `Average`, `Sum` and `SampleCount`.
+```
+cloudwatch i-abcd1234 --statistics Maximum
+```
+
+Duration and period also can be given with `--duration` and `period` options.
+```
+cloudwatch i-abcd1234 --duration 3days --period 1hour
+```
+
+Regarding AWS/EC2, you can filter EC2 instances with some tags.
+Next example is that `site` is `dev` and `role` is `webapp` or `db`.
+```
+cloudwatch "tag:site=dev,role=webapp|db"
+```
+
+
 ## Development
 ```
 $ gulp
@@ -146,6 +184,10 @@ $ open a.png.html
 1. Fork me (<https://github.com/tmtk75/aws-cloudwatch-chart-slack>)
 1. Create your feature branch (git checkout -b my-new-feature)
 1. Commit your changes (git commit -am 'Add some feature')
+  1. Pass `npm run typecheck`
+  1. Pass `npm run lint`
+1. Add test cases for your changes
+  1. Pass `npm test`
 1. Push to the branch (git push origin my-new-feature)
 1. Create your new pull request
 

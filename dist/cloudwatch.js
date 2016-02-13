@@ -32,18 +32,9 @@ var CloudWatch = function () {
   }
 
   _createClass(CloudWatch, [{
-    key: "region",
-
-    /** */
-    value: function region(r) {
-      _awsSdk2.default.config.update({ region: r });
-      return this;
-    }
-
-    /** */
-
-  }, {
     key: "endTime",
+
+    /** */
     value: function endTime(d) {
       this._endTime = d;
       return this;

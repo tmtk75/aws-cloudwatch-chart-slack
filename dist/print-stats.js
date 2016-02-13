@@ -2,6 +2,10 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _awsSdk = require("aws-sdk");
+
+var _awsSdk2 = _interopRequireDefault(_awsSdk);
+
 var _cloudwatch = require("./cloudwatch.js");
 
 var _cloudwatch2 = _interopRequireDefault(_cloudwatch);
@@ -9,6 +13,8 @@ var _cloudwatch2 = _interopRequireDefault(_cloudwatch);
 var _metrics = require("./metrics.js");
 
 var _time = require("./time.js");
+
+var _lsEc = require("./ls-ec2.js");
 
 var _path = require("path");
 
@@ -33,8 +39,10 @@ function print_stats(argv) {
     return Promise.reject(new Error("InstanceId is missing"));
   }
 
+  _awsSdk2.default.config.update({ region: region });
+
   var watch = function watch(instanceID) {
-    return new _cloudwatch2.default().region(region).endTime(argv["end-time"]).duration(argv.duration || "1day").period(period).statistics(stats).metricStatistics(ns, instanceID, metricName).then(function (r) {
+    return new _cloudwatch2.default().endTime(argv["end-time"]).duration(argv.duration || "1day").period(period).statistics(stats).metricStatistics(ns, instanceID, metricName).then(function (r) {
       var _extends2;
 
       return _extends((_extends2 = {
@@ -43,9 +51,17 @@ function print_stats(argv) {
     });
   };
 
-  return Promise.all(instIDs.split(",").map(function (e) {
-    return watch(e.trim());
-  }));
+  var a = instIDs.match("^tag:(.*)");
+  if (a && ns === "AWS/RDS") return Promise.reject(new Error("filters is not supported AWS/RDS"));
+
+  var p = a ? (0, _lsEc.ls_ec2)(a[1]) : Promise.resolve(instIDs);
+  return p.then(function (s) {
+    return s.split(",");
+  }).then(function (s) {
+    return Promise.all(s.map(function (e) {
+      return watch(e.trim());
+    }));
+  });
 }
 
 module.exports = {
