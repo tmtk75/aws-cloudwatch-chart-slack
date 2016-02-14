@@ -8,25 +8,26 @@ Usage: ${name} [options] <instance-ID> [metric-name] [namespace]
    metrics-name is CPUUtilization, namespace is AWS/EC2 by default.
 
 Options:
-   --region        AWS region name   e.g) us-west-1
-   --duration      Duration   e.g) 3days, 1h, 30minutes
-   --period        Period     e.g) 30minutes
-   --statistics    Statistics   Maximum,Minimum,Average,Sum,SampleCount
+   --region          AWS region name   e.g) us-west-1
+   --duration        Duration   e.g) 3days, 1h, 30minutes
+   --period          Period     e.g) 30minutes
+   --statistics      Statistics   Maximum,Minimum,Average,Sum,SampleCount
 
-   --width         Chart width    e.g) 800
-   --height        Chart height   e.g) 300
-   --max           Y axis max
-   --min           Y axis min
-   --grid-x        Show x grid
-   --grid-y        Show y grid
-   --utc           X axis in UTC
-   --bytes         Y axis in bytes instead of megabytes
-   --x-label       Label for x
+   --width           Chart width    e.g) 800
+   --height          Chart height   e.g) 300
+   --max             Y axis max
+   --min             Y axis min
+   --grid-x          Show x grid
+   --grid-y          Show y grid
+   --utc             X axis in UTC
+   --bytes           Y axis in bytes instead of megabytes
+   --x-label         Label for x
 
-   --keep-html     Disable to remove temporary .html file
-   --keep-js       Disable to remove temporary .js file
-   --filename,-f   Generated filename
-   --base64        Output as base64
+   --keep-html       Disable to remove temporary .html file
+   --keep-js         Disable to remove temporary .js file
+   --filename,-f     Generated filename
+   --base64          Output as base64
+   --without-image   Disable genrating image
 
 Examples:
   ${name} i-0935c127

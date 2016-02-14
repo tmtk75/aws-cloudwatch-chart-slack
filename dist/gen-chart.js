@@ -15,8 +15,8 @@ var _dynamodb2 = _interopRequireDefault(_dynamodb);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var argv = require("minimist")(_phantomApi.system.args.slice(1), {
-  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format"],
-  boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes"],
+  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format", "bindto"],
+  boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes", "without-image"],
   alias: {
     f: "filename"
   },
@@ -26,7 +26,8 @@ var argv = require("minimist")(_phantomApi.system.args.slice(1), {
     node_modules_path: "./node_modules",
     format: "png",
     "x-tick-count": 120,
-    "x-tick-culling-max": 10
+    "x-tick-culling-max": 10,
+    "bindto": "container"
   }
 });
 
@@ -53,7 +54,7 @@ try {
     var textLabelX = (0, _metrics.to_axis_x_label_text)(repre.Datapoints, argv.utc);
 
     var data = {
-      bindto: "#container",
+      bindto: "#" + argv.bindto,
       data: {
         x: "x",
         columns: [["x"].concat(sort(repre.Datapoints).map(function (e) {
@@ -140,13 +141,14 @@ function render(argv, data) {
   var node_modules_path = argv.node_modules_path;
 
   _phantomApi.fs.write(tmp_js, "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
-  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='container'></div>\n    </body>\n    <script src=\"" + tmp_js + "\"></script>\n  </html>\n  ");
+  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='" + argv.bindto + "'></div>\n    </body>\n    <script src=\"" + tmp_js + "\"></script>\n  </html>\n  ");
 
   page.open(tmp_html, function (status) {
-    if (!argv.base64) {
+    //console.error(JSON.stringify(argv))
+    if (!argv["without-image"]) {
       page.render(filename, { format: argv.format });
       _phantomApi.system.stdout.write(filename);
-    } else {
+    } else if (argv.base64) {
       _phantomApi.system.stdout.write(page.renderBase64(argv.format));
     }
     if (!argv["keep-html"]) {

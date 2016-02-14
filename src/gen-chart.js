@@ -5,8 +5,8 @@ import {toMax, toMin, toAxisYLabel, toY, nsToDimName, to_axis_x_label_text} from
 import dynamodb from "./dynamodb.js"
 
 const argv = require("minimist")(system.args.slice(1), {
-  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format"],
-  boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes"],
+  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format", "bindto"],
+  boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes", "without-image"],
   alias: {
     f: "filename",
   },
@@ -17,6 +17,7 @@ const argv = require("minimist")(system.args.slice(1), {
     format: "png",
     "x-tick-count": 120,
     "x-tick-culling-max": 10,
+    "bindto": "container",
   }
 });
 
@@ -37,7 +38,7 @@ try {
   const textLabelX = to_axis_x_label_text(repre.Datapoints, argv.utc)
 
   const data = {
-    bindto: "#container",
+    bindto: `#${argv.bindto}`,
     data: {
       x: "x",
       columns: [
@@ -131,17 +132,18 @@ function render(argv: Object, data: Object): void {
     <script src="${node_modules_path}/c3/node_modules/d3/d3.js" charset="utf-8"></script>
     <script src="${node_modules_path}/c3/c3.js"></script>
     <body>
-      <div id='container'></div>
+      <div id='${argv.bindto}'></div>
     </body>
     <script src="${tmp_js}"></script>
   </html>
   `)
   
   page.open(tmp_html, (status) => {
-    if (!argv.base64) {
+    //console.error(JSON.stringify(argv))
+    if (!argv["without-image"]) {
       page.render(filename, {format: argv.format});
       system.stdout.write(filename)
-    } else {
+    } else if (argv.base64) {
       system.stdout.write(page.renderBase64(argv.format))
     }
     if (!argv["keep-html"]) {
