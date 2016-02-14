@@ -7,7 +7,7 @@ const metricsRDS = [
   { MetricName: "CPUUtilization",            Statistics: [ "Average" ] },
   { MetricName: "DatabaseConnections",       Statistics: [ "Maximum" ] },
   { MetricName: "DiskQueueDepth",            Statistics: [ "Maximum" ] },
-  { MetricName: "FreeStorageSpace",          Statistics: [ "Maximum" ] },
+  { MetricName: "FreeStorageSpace",          Statistics: [ "Minimum" ] },
   { MetricName: "FreeableMemory",            Statistics: [ "Minimum" ] },
   { MetricName: "NetworkReceiveThroughput",  Statistics: [ "Maximum" ] },
   { MetricName: "NetworkTransmitThroughput", Statistics: [ "Maximum" ] },
