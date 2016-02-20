@@ -47,5 +47,6 @@ module.exports = {
   slack: {
     post: post
   },
-  ls_ec2: _lsEc.ls_ec2
+  ls_ec2: _lsEc.ls_ec2,
+  render: _render.render
 };

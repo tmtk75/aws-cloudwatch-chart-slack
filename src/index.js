@@ -26,4 +26,5 @@ module.exports = {
     post,
   },
   ls_ec2,
+  render,
 }
