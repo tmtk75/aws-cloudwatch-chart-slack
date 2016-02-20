@@ -38,11 +38,11 @@ function print_stats(argv: Params): Promise {
       .period(period)
       .statistics(stats)
       .metricStatistics(ns, instanceID, metricName)
-      .then(r => ({
+      .then(([sep, data]) => ({
         Namespace: ns,
         [dimName]: instanceID,
-        Period: period,
-        ...r,
+        ...sep,
+        ...data,
       }))
 
   let a = instIDs.match("^tag:(.*)")

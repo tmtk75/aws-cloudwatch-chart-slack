@@ -94,7 +94,7 @@ var CloudWatch = function () {
       var cloudwatch = new _awsSdk2.default.CloudWatch();
       return new Promise(function (resolve, reject) {
         return cloudwatch.getMetricStatistics(params, function (err, data) {
-          return err ? reject(err) : resolve(data);
+          return err ? reject(err) : resolve([sep, data]);
         });
       });
     }

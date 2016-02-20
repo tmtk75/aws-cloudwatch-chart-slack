@@ -139,15 +139,14 @@ export function calc_period(datapoints: Array<Datapoint>, measurement: string = 
   return moment(b.Timestamp).diff(moment(a.Timestamp), measurement)
 }
 
-export function to_axis_x_label_text(datapoints: Array<Datapoint>, utc: boolean): string {
-  let dp = datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
-  let last = moment(dp[dp.length - 1].Timestamp)
-  if (utc) last = last.utc()
-  let f = last.format("YYYY-MM-DD HH:mm")
+export function to_axis_x_label_text(stats: Object, utc: boolean): string {
+  let et   = moment(stats.EndTime)
+  let diff = moment(stats.StartTime).diff(et)
   let tz = utc ? "UTC" : (new Date().getTimezoneOffset() / 60) + "h"
-  let d = last.diff(moment(dp[0].Timestamp))
-  let df = moment.duration(d).humanize()
-  return `${find_stat_name(datapoints)} every ${calc_period(datapoints)}minutes from ${f} (tz:${tz}) to ${df} ago`
+
+  let ago  = moment.duration(diff).humanize()
+  let from = (utc ? et.utc() : et).format("YYYY-MM-DD HH:mm")
+  return `${find_stat_name(stats.Datapoints)} every ${calc_period(stats.Datapoints)}minutes from ${from} (tz:${tz}) to ${ago} ago`
 }
 
 //

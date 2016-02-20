@@ -44,16 +44,17 @@ try {
     };
     var yData = stats_data.map(function (stats) {
       if (stats.Datapoints.length < 2) {
-        throw new Error("Number of datapoints is less than 2 for " + MetricName + " of " + stats.InstanceId + ". There is a possibility InstanceId was wrong.");
+        throw new Error("Number of datapoints is less than 2 for " + MetricName + " of " + stats.InstanceId + ". There is a possibility InstanceId was wrong. " + JSON.stringify(stats));
       }
       var b = _dynamodb2.default.mimic(stats);
       return [stats[(0, _metrics.nsToDimName)(Namespace)]].concat(sort(stats.Datapoints).map(function (e) {
         return b ? _dynamodb2.default.toY(e) : (0, _metrics.toY)(e, argv.bytes);
       }));
     });
-    var textLabelX = (0, _metrics.to_axis_x_label_text)(repre.Datapoints, argv.utc);
+    var textLabelX = (0, _metrics.to_axis_x_label_text)(repre, argv.utc);
 
     var data = {
+      _meta: { StartTime: repre.StartTime, EndTime: repre.EndTime, UTC: argv.utc },
       bindto: "#" + argv.bindto,
       data: {
         x: "x",
@@ -140,8 +141,9 @@ function render(argv, data) {
   var filename = argv.filename || "./" + suffix + ".png";
   var node_modules_path = argv.node_modules_path;
 
-  _phantomApi.fs.write(tmp_js, "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
-  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='" + argv.bindto + "'></div>\n    </body>\n    <script src=\"" + tmp_js + "\"></script>\n  </html>\n  ");
+  var now = (0, _moment2.default)().format("YYYY-MM-DD HH:mm:ss Z");
+  _phantomApi.fs.write(tmp_js, "\n  // Generated at " + now + "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
+  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <!-- Generated at " + now + " -->\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='" + argv.bindto + "'></div>\n    </body>\n    <script src=\"" + tmp_js.split("/").slice(-1) + "\"></script>\n  </html>\n  ");
 
   page.open(tmp_html, function (status) {
     //console.error(JSON.stringify(argv))

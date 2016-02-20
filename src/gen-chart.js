@@ -29,15 +29,16 @@ try {
   const sort = (datapoints) => datapoints.sort((a, b) => a.Timestamp.localeCompare(b.Timestamp))
   const yData = stats_data.map(stats => {
     if (stats.Datapoints.length < 2) {
-      throw new Error(`Number of datapoints is less than 2 for ${MetricName} of ${stats.InstanceId}. There is a possibility InstanceId was wrong.`)
+      throw new Error(`Number of datapoints is less than 2 for ${MetricName} of ${stats.InstanceId}. There is a possibility InstanceId was wrong. ${JSON.stringify(stats)}`)
     }
     let b = dynamodb.mimic(stats)
     return [stats[nsToDimName(Namespace)]].concat(sort(stats.Datapoints)
              .map(e => b ? dynamodb.toY(e) : toY(e, argv.bytes)))
   })
-  const textLabelX = to_axis_x_label_text(repre.Datapoints, argv.utc)
+  const textLabelX = to_axis_x_label_text(repre, argv.utc)
 
   const data = {
+    _meta: {StartTime: repre.StartTime, EndTime: repre.EndTime, UTC: argv.utc},
     bindto: `#${argv.bindto}`,
     data: {
       x: "x",
@@ -121,20 +122,23 @@ function render(argv: Object, data: Object): void {
   const filename = argv.filename || `./${suffix}.png`
   const node_modules_path = argv.node_modules_path;
 
+  const now = moment().format("YYYY-MM-DD HH:mm:ss Z")
   fs.write(tmp_js, `
+  // Generated at ${now}
   var data = ${JSON.stringify(data)};
   data.axis.y.tick = {format: d3.format(',')};
   c3.generate(data);
   `)
   fs.write(tmp_html, `
   <html>
+    <!-- Generated at ${now} -->
     <link href="${node_modules_path}/c3/c3.css" rel="stylesheet" type="text/css"/>
     <script src="${node_modules_path}/c3/node_modules/d3/d3.js" charset="utf-8"></script>
     <script src="${node_modules_path}/c3/c3.js"></script>
     <body>
       <div id='${argv.bindto}'></div>
     </body>
-    <script src="${tmp_js}"></script>
+    <script src="${tmp_js.split("/").slice(-1)}"></script>
   </html>
   `)
   

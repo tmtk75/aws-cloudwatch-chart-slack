@@ -64,7 +64,7 @@ class CloudWatch {
     //process.stderr.write(JSON.stringify(params));
     let cloudwatch = new AWS.CloudWatch();
     return new Promise((resolve, reject) =>
-      cloudwatch.getMetricStatistics(params, (err, data) => err ? reject(err) : resolve(data))
+      cloudwatch.getMetricStatistics(params, (err, data) => err ? reject(err) : resolve([sep, data]))
     )
   }
 }
