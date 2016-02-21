@@ -5,7 +5,8 @@ import {toMax, toMin, toAxisYLabel, toY, nsToDimName, to_axis_x_label_text} from
 import dynamodb from "./dynamodb.js"
 
 const argv = require("minimist")(system.args.slice(1), {
-  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format", "bindto"],
+  string: ["filename", "width", "height", "max", "min", "node_modules_path",
+           "x-label", "format", "bindto", "point-r"],
   boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes", "without-image"],
   alias: {
     f: "filename",
@@ -18,6 +19,7 @@ const argv = require("minimist")(system.args.slice(1), {
     "x-tick-count": 120,
     "x-tick-culling-max": 10,
     "bindto": "container",
+    "point-r": 2.5,
   }
 });
 
@@ -94,6 +96,9 @@ try {
       y: {
         show: argv["grid-y"],
       }
+    },
+    point: {
+      r: argv["point-r"],
     },
   }
 

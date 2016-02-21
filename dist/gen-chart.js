@@ -15,7 +15,7 @@ var _dynamodb2 = _interopRequireDefault(_dynamodb);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var argv = require("minimist")(_phantomApi.system.args.slice(1), {
-  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format", "bindto"],
+  string: ["filename", "width", "height", "max", "min", "node_modules_path", "x-label", "format", "bindto", "point-r"],
   boolean: ["base64", "keep-html", "keep-js", "grid-x", "grid-y", "utc", "bytes", "without-image"],
   alias: {
     f: "filename"
@@ -27,7 +27,8 @@ var argv = require("minimist")(_phantomApi.system.args.slice(1), {
     format: "png",
     "x-tick-count": 120,
     "x-tick-culling-max": 10,
-    "bindto": "container"
+    "bindto": "container",
+    "point-r": 2.5
   }
 });
 
@@ -110,6 +111,9 @@ try {
         y: {
           show: argv["grid-y"]
         }
+      },
+      point: {
+        r: argv["point-r"]
       }
     };
 
