@@ -89,7 +89,7 @@ function toY(metric, bytes) {
   if (metric.Unit === "Bytes" && !bytes) {
     return e / (1024 * 1024); // Megabytes
   }
-  return e;
+  return e || 0;
 }
 
 var _stats = _immutable2.default.Set(["Maximum", "Average", "Minimum", "Sum", "SampleCount"]);

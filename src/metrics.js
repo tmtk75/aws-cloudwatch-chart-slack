@@ -121,7 +121,7 @@ export function toY(metric: Object, bytes: boolean): number {
   if (metric.Unit === "Bytes" && !bytes) {
     return e / (1024 * 1024)  // Megabytes
   }
-  return e
+  return e || 0
 }
 
 const _stats = I.Set(["Maximum", "Average", "Minimum", "Sum", "SampleCount"])
