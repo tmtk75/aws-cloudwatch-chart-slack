@@ -13,6 +13,8 @@ var _upload = require("./upload.js");
 
 var _lsEc = require("./ls-ec2.js");
 
+var _procGenChart = require("./proc-gen-chart.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function unlink(path) {
@@ -48,5 +50,6 @@ module.exports = {
     post: post
   },
   ls_ec2: _lsEc.ls_ec2,
-  render: _render.render
+  render: _render.render,
+  proc_gen_chart: _procGenChart.proc_gen_chart
 };

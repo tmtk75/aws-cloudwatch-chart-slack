@@ -4,6 +4,7 @@ import fs from "fs"
 import {render} from "./render.js"
 import {upload} from "./upload.js"
 import {ls_ec2} from "./ls-ec2.js"
+import {proc_gen_chart} from "./proc-gen-chart.js"
 
 function unlink(path: string): Promise {
   return new Promise((resolve, reject) => fs.unlink(path, (err) => err ? reject(err) : resolve(path)))
@@ -27,4 +28,5 @@ module.exports = {
   },
   ls_ec2,
   render,
+  proc_gen_chart,
 }
