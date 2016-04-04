@@ -10,7 +10,13 @@ function upload(channel, path) {
     var form = new FormData();
     form.append("channels", channel);
     form.append("token", process.env.SLACK_API_TOKEN);
-    form.append("file", fs.createReadStream(path));
+    //form.append("file", fs.createReadStream(path));  //NOTE: This became to fail somehow suddenly... https://github.com/form-data/form-data#notes
+    var buf = fs.readFileSync(path);
+    form.append("file", buf, {
+      filename: path,
+      contentType: "image/png",
+      knownLength: buf.length
+    });
 
     return fetch("https://slack.com/api/files.upload", { method: "POST", body: form }).then(function (res) {
       return(
