@@ -19,7 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.2.30",
     "c3": "^0.4.11-rc4",
-    "form-data": "^1.0.0-rc3",
+    "form-data": "^1.0.0-rc4",
     "immutable": "^3.7.6",
     "minimist": "^1.2.0",
     "moment": "^2.11.1",
