@@ -5,7 +5,7 @@
   "keywords": ["AWS", "CloudWatch", "chart", "upload", "Slack"],
   "main": "index.js",
   "engines": {
-    "node": ">=0.12",
+    "node": "~4",
     "npm": "~2"
   },
   "scripts": {

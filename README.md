@@ -6,9 +6,11 @@ You can render charts for datapoints of CloudWatch, and can upload chart images 
 <img width="70.7%" src="https://59c5872c.jp.kiiapps.com/api/x/s.51e97aa00022-e3da-5e11-3a8c-0a01367a"></img>
 
 ## Getting Started
+Tested with node-4.3.1 and npm-2.14.12.
 ```
 $ npm install [--no-spin]
 ```
+NOTE: v0.1.2 doesn't work with npm-3.x due to [here](https://github.com/tmtk75/aws-cloudwatch-chart-slack/blob/v0.1.2/src/gen-chart.js#L136)
 
 Set four environment variables.
 ```
