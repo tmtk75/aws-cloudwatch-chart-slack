@@ -36,7 +36,7 @@ module.exports = (robot) ->
     console.log "cloudwatch: #{id}"
     console.log "message.room: #{msg.message.room}"
 
-    chart.slack.post "##{channel_name}", [id, params...], (err, file)->
+    chart.slack.post "#{msg.room}", [id, params...], (err, file)->
       if (err)
         console.error err.stack
         msg.send err.message
