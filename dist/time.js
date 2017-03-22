@@ -1,10 +1,11 @@
 "use strict";
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 exports.toSEP = toSEP;
 exports.toSeconds = toSeconds;
 
@@ -18,19 +19,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Start End Period
  */
 function toSEP() {
-  var reltime = arguments.length <= 0 || arguments[0] === undefined ? "1day" : arguments[0];
-  var end = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
+  var reltime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1day";
+  var end = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 
   var a = reltime.match(/([0-9]+) *(.*)/);
   if (!a) {
     throw new Error(reltime);
   }
 
-  var _a = _slicedToArray(a, 3);
-
-  var _ = _a[0];
-  var n = _a[1];
-  var m = _a[2];
+  var _a = _slicedToArray(a, 3),
+      _ = _a[0],
+      n = _a[1],
+      m = _a[2];
 
   var endTime = end ? (0, _moment2.default)(end) : (0, _moment2.default)();
   //console.error(endTime);
@@ -51,11 +51,10 @@ function toSeconds(period) {
     return NaN;
   }
 
-  var _a2 = _slicedToArray(a, 3);
-
-  var _ = _a2[0];
-  var n = _a2[1];
-  var u = _a2[2];
+  var _a2 = _slicedToArray(a, 3),
+      _ = _a2[0],
+      n = _a2[1],
+      u = _a2[2];
 
   return _moment2.default.duration(parseInt(n), u).asSeconds();
 }

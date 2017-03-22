@@ -29,7 +29,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /** */
 function describe_db_instances() {
-  var filters = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
   //AWS.config.update({region: "ap-northeast-1"})
   var rds = new _awsSdk2.default.RDS();

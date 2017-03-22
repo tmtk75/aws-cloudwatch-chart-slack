@@ -45,10 +45,10 @@ function print_stats(argv) {
 
   var watch = function watch(instanceID) {
     return new _cloudwatch2.default().endTime(argv["end-time"]).duration(argv.duration || "1day").period(period).statistics(stats).metricStatistics(ns, instanceID, metricName).then(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2);
+      var _ref2 = _slicedToArray(_ref, 2),
+          sep = _ref2[0],
+          data = _ref2[1];
 
-      var sep = _ref2[0];
-      var data = _ref2[1];
       return _extends(_defineProperty({
         Namespace: ns
       }, dimName, instanceID), sep, data);

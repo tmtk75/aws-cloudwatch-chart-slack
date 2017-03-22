@@ -19,7 +19,7 @@ function upload(channel, path) {
     });
 
     return fetch("https://slack.com/api/files.upload", { method: "POST", body: form }).then(function (res) {
-      return(
+      return (
         /*
          * {ok: true, file: {...}}    See https://api.slack.com/types/file
          */

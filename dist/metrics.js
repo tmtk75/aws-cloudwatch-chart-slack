@@ -1,11 +1,12 @@
 "use strict";
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.METRICS = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 exports.searchMetric = searchMetric;
 exports.nsToDimName = nsToDimName;
 exports.toMax = toMax;
@@ -102,18 +103,16 @@ function find_stat_name(datapoints) {
 }
 
 function calc_period(datapoints) {
-  var measurement = arguments.length <= 1 || arguments[1] === undefined ? "minutes" : arguments[1];
+  var measurement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "minutes";
 
   if (!(datapoints && datapoints.length > 1)) return null;
 
   var _datapoints$sort = datapoints.sort(function (a, b) {
     return a.Timestamp.localeCompare(b.Timestamp);
-  });
-
-  var _datapoints$sort2 = _slicedToArray(_datapoints$sort, 2);
-
-  var a = _datapoints$sort2[0];
-  var b = _datapoints$sort2[1];
+  }),
+      _datapoints$sort2 = _slicedToArray(_datapoints$sort, 2),
+      a = _datapoints$sort2[0],
+      b = _datapoints$sort2[1];
 
   return (0, _moment2.default)(b.Timestamp).diff((0, _moment2.default)(a.Timestamp), measurement);
 }

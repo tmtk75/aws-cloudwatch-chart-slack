@@ -18,9 +18,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function mimic(stat) {
   return stat.Namespace === "AWS/DynamoDB" && stat.Period === 60 && (stat.Label === "ConsumedReadCapacityUnits" || stat.Label === "ConsumedWriteCapacityUnits") && stat.Datapoints[0].Sum !== undefined;
 }
-
 function toY(e) {
-  var bytes = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+  var bytes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
   return m.toY(e, bytes) / 60;
 }

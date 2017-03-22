@@ -63,12 +63,8 @@ try {
           return _moment2.default.utc(e["Timestamp"]).valueOf();
         }))].concat(yData)
       },
-      //colors: {
-      //  [axisXLabel]: (Namespace === "AWS/EC2" ? "#f58536" : null),
-      //},
       transition: {
         duration: null },
-      //
       size: {
         width: argv.width - 16, // heuristic adjustments
         height: argv.height - 16
@@ -83,9 +79,6 @@ try {
             position: "outer-middle"
           }
         },
-        //tick: {
-        //   format: d3.format('$,'),
-        //}
         x: {
           type: "timeseries",
           tick: {
@@ -147,7 +140,7 @@ function render(argv, data) {
 
   var now = (0, _moment2.default)().format("YYYY-MM-DD HH:mm:ss Z");
   _phantomApi.fs.write(tmp_js, "\n  // Generated at " + now + "\n  var data = " + JSON.stringify(data) + ";\n  data.axis.y.tick = {format: d3.format(',')};\n  c3.generate(data);\n  ");
-  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <!-- Generated at " + now + " -->\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/c3/node_modules/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='" + argv.bindto + "'></div>\n    </body>\n    <script src=\"" + tmp_js.split("/").slice(-1) + "\"></script>\n  </html>\n  ");
+  _phantomApi.fs.write(tmp_html, "\n  <html>\n    <!-- Generated at " + now + " -->\n    <link href=\"" + node_modules_path + "/c3/c3.css\" rel=\"stylesheet\" type=\"text/css\"/>\n    <script src=\"" + node_modules_path + "/d3/d3.js\" charset=\"utf-8\"></script>\n    <script src=\"" + node_modules_path + "/c3/c3.js\"></script>\n    <body>\n      <div id='" + argv.bindto + "'></div>\n    </body>\n    <script src=\"" + tmp_js.split("/").slice(-1) + "\"></script>\n  </html>\n  ");
 
   page.open(tmp_html, function (status) {
     //console.error(JSON.stringify(argv))

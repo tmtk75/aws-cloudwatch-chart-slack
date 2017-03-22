@@ -138,7 +138,7 @@ function render(argv: Object, data: Object): void {
   <html>
     <!-- Generated at ${now} -->
     <link href="${node_modules_path}/c3/c3.css" rel="stylesheet" type="text/css"/>
-    <script src="${node_modules_path}/c3/node_modules/d3/d3.js" charset="utf-8"></script>
+    <script src="${node_modules_path}/d3/d3.js" charset="utf-8"></script>
     <script src="${node_modules_path}/c3/c3.js"></script>
     <body>
       <div id='${argv.bindto}'></div>

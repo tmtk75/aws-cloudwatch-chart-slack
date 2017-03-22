@@ -35,10 +35,10 @@ function post(channel, args, callback) {
   return (0, _render.render)(args).then(function (path) {
     return Promise.all([(0, _upload.upload)(channel, path), unlink(path)]);
   }).then(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 2);
+    var _ref2 = _slicedToArray(_ref, 2),
+        file = _ref2[0].file,
+        path = _ref2[1];
 
-    var file = _ref2[0].file;
-    var path = _ref2[1];
     return cb_ok(null, file);
   }).catch(function (err) {
     return cb_err(err);

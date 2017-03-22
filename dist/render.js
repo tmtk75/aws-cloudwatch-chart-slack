@@ -14,6 +14,7 @@ function render(args) {
   return (0, _printStats.print_stats)((0, _minimist2.default)(args)).then((0, _procGenChart.proc_gen_chart)(args));
 }
 
+
 module.exports = {
   render: render
 };
